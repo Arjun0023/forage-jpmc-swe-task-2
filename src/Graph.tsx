@@ -14,7 +14,7 @@ interface IProps {
  * Perspective library adds load to HTMLElement prototype.
  * This interface acts as a wrapper for Typescript compiler.
  */
-interface PerspectiveViewerElement {
+interface PerspectiveViewerElement extends HTMLElement {
   load: (table: Table) => void,
 }
 
@@ -27,8 +27,15 @@ class Graph extends Component<IProps, {}> {
   table: Table | undefined;
 
   render() {
-    return React.createElement('perspective-viewer');
+    return React.createElement('perspective-viewer', {
+      view: 'y_line',
+      'column-pivots': '["stock"]',
+      'row-pivots': '["timestamp"]',
+      columns: '["timestamp", "top_ask_price"]',
+      aggregates: `{"timestamp":"distinct count", "top_ask_price":"avg", "top_bid_price":"avg"}`,
+    });
   }
+  
 
   componentDidMount() {
     // Get element to attach the table from the DOM.
